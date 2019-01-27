@@ -26,11 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     MyLabel.cpp \
-    fruits.cpp
+    fruits.cpp \
+    game.cpp \
+    power.cpp
 
 HEADERS += \
     MyLabel.h \
-    fruits.h
+    fruits.h \
+    game.h \
+    power.h
 
 FORMS += \
         mainwindow.ui

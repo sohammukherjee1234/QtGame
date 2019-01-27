@@ -7,13 +7,19 @@
 #include "fruits.h"
 #include<QSize>
 #include<algorithm>
+#include<QFont>
+#include <QString>
+#include "game.h"
 
+extern game *newgame;
 MyLabel::MyLabel(QGraphicsItem *parent):QGraphicsPixmapItem(parent)
 {
-    currpower=1000;
+    currpower=10000;
 
     startx=400;
     starty=300;
+
+    //scene()->addText(QString("Score: "+QString::number(currpower)),QFont("times",16));
 
     setPixmap(QPixmap("/home/soham/Game/images/standing-still.png"));
     QTimer *timer=new QTimer(this);
@@ -28,6 +34,8 @@ void MyLabel::drawfruit()
         scene()->addItem(fruit);
 
         currpower-=20;
+
+        newgame->mypower->update(currpower);
 
         if(currpower<=0)
         {
@@ -68,7 +76,8 @@ void MyLabel::keyPressEvent(QKeyEvent *keyevent)
     {
         if(typeid(*collidingitem[i])==typeid(fruits))
         {
-            currpower+=100;  //Score when hit with a fruit
+            currpower+=1000;  //Score when hit with a fruit
+
             scene()->removeItem(collidingitem[i]);
             delete collidingitem[i];
         }
@@ -76,8 +85,8 @@ void MyLabel::keyPressEvent(QKeyEvent *keyevent)
 
     }
 
-    currpower-=(abs(x()-startx))/10+(abs(y()-starty))/10;
-
+    currpower-=(abs(x()-startx))+(abs(y()-starty));
+    newgame->mypower->update(currpower);
     if(currpower<=0)
     {
         scene()->setBackgroundBrush(QPixmap("/home/soham/Game/images/gameover.jpg").scaled(QSize(800,600)));
