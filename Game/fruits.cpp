@@ -4,27 +4,27 @@
 #include<cstring>
 #include<QTimer>
 #include<QGraphicsScene>
-
+#include "utility.h"
  fruits::fruits(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
      srand(time(NULL));
-     int xcoord=rand()%30+1;
-     int ycoord=rand()%20+1;
+     int xcoord=rand()%(utility::framewidth/utility::charactersize)+1;
+     int ycoord=rand()%(utility::frameheight/utility::charactersize)+1;
      int type=rand()%6+1;
 
 
-     xcoord*=20;
-     ycoord*=20;
+     xcoord*=utility::charactersize;
+     ycoord*=utility::charactersize;
 
-     while(xcoord>=800 || ycoord>=600)
+     while(xcoord>=utility::framewidth || ycoord>=utility::frameheight)
      {
-          xcoord=rand()%30+1;
-          ycoord=rand()%20+1;
+        xcoord=rand()%(utility::framewidth/utility::charactersize)+1;
+         ycoord=rand()%(utility::frameheight/utility::charactersize)+1;
 
 
 
-         xcoord*=20;
-         ycoord*=20;
+         xcoord*=utility::charactersize;
+         ycoord*=utility::charactersize;
      }
 
      setPos(xcoord,ycoord);
@@ -41,7 +41,7 @@
     setPixmap(QPixmap("/home/soham/Game/images/fruits/4.png"));
     else if(type==5)
     setPixmap(QPixmap("/home/soham/Game/images/fruits/5.png"));
-   else if(type==6)
+    else
     setPixmap(QPixmap("/home/soham/Game/images/fruits/6.png"));
 
     QTimer *timer=new QTimer(this);

@@ -5,11 +5,12 @@
 #include<QGraphicsScene>
 #include "MyLabel.h"
 #include "power.h"
-
+#include "utility.h"
 class game: public QGraphicsView
 {
 public:
        game(QGraphicsView *parent=0);
+
        QGraphicsScene *scene;
        MyLabel *person;
        power *mypower;

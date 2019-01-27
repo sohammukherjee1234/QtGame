@@ -3,11 +3,12 @@
 
 
 #include <QGraphicsTextItem>
-
+#include "utility.h"
 class power:public QGraphicsTextItem
 {
 public:
     power(QGraphicsTextItem *parent=0);
+
     int score;
 
 public slots:

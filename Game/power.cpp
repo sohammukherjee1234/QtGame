@@ -5,7 +5,7 @@
 
 power::power(QGraphicsTextItem *parent):QGraphicsTextItem(parent)
 {
-    score=10000;
+    score=0;
     setPlainText(QString("Power: "+QString::number(score)));;
     setDefaultTextColor(Qt::red);
     setFont(QFont("times",16));

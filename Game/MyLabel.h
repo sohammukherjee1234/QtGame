@@ -7,12 +7,13 @@
 #include<QGraphicsPixmapItem>
 #include<QGraphicsItem>
 #include<QObject>
-
+#include "utility.h"
 
 
 class MyLabel:public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
    public :
+
     int currpower;
    int scenewidth;
     int sceneheight;
@@ -23,5 +24,6 @@ class MyLabel:public QObject,public QGraphicsPixmapItem{
 
 public slots:
     void drawfruit();
+    void drawenemy();
 };
 #endif // LABEL_H

@@ -28,13 +28,19 @@ SOURCES += \
     MyLabel.cpp \
     fruits.cpp \
     game.cpp \
-    power.cpp
+    power.cpp \
+    utility.cpp \
+    bullets.cpp \
+    enemy.cpp
 
 HEADERS += \
     MyLabel.h \
     fruits.h \
     game.h \
-    power.h
+    power.h \
+    utility.h \
+    bullets.h \
+    enemy.h
 
 FORMS += \
         mainwindow.ui

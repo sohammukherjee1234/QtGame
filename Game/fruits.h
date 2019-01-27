@@ -16,6 +16,7 @@ class fruits:public QObject,public QGraphicsPixmapItem
     public:
     fruits(QGraphicsItem *parent=0);
 
+
 public slots:
     void draw();
 };

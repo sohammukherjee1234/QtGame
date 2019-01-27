@@ -10,21 +10,28 @@
 #include<QFont>
 #include <QString>
 #include "game.h"
+#include "utility.h"
+#include "bullets.h"
+#include "enemy.h"
 
 extern game *newgame;
 MyLabel::MyLabel(QGraphicsItem *parent):QGraphicsPixmapItem(parent)
 {
-    currpower=10000;
+    currpower=0;
 
-    startx=400;
-    starty=300;
+    startx=utility::framewidth/2;
+    starty=utility::frameheight/2;
 
     //scene()->addText(QString("Score: "+QString::number(currpower)),QFont("times",16));
 
-    setPixmap(QPixmap("/home/soham/Game/images/standing-still.png"));
+    setPixmap(QPixmap("/home/soham/Game/images/dog_down.png"));
     QTimer *timer=new QTimer(this);
    connect(timer,SIGNAL(timeout()),this,SLOT(drawfruit()));
-   timer->start(1000);
+   timer->start(2000);
+
+QTimer *timer2=new QTimer(this);
+connect(timer2,SIGNAL(timeout()),this,SLOT(drawenemy()));
+timer2->start(2000);
 
 }
 
@@ -33,19 +40,24 @@ void MyLabel::drawfruit()
         fruits *fruit=new fruits();
         scene()->addItem(fruit);
 
-        currpower-=20;
 
-        newgame->mypower->update(currpower);
 
-        if(currpower<=0)
-        {
-            scene()->setBackgroundBrush(QPixmap("/home/soham/Game/images/gameover.jpg").scaled(QSize(800,600)));
-            scene()->removeItem(this);
-            delete this;
-        }
+
+
+
+
+
+
+
 
 }
 
+
+void MyLabel::drawenemy()
+{
+    enemy *myenemy=new enemy();
+    scene()->addItem(myenemy);
+}
 
 
 void MyLabel::keyPressEvent(QKeyEvent *keyevent)
@@ -54,19 +66,57 @@ void MyLabel::keyPressEvent(QKeyEvent *keyevent)
     {
 
 
-        setPos(x()+20,y());
+        setPos(x()+utility::charactersize,y());
+        setPixmap(QPixmap("/home/soham/Game/images/dog_right.png"));
+
     }
     else if(keyevent->key()==Qt::Key_W)
     {
-        setPos(x(),y()-20);
+        setPos(x(),y()-utility::charactersize);
+        setPixmap(QPixmap("/home/soham/Game/images/dog_up.png"));
     }
     else if(keyevent->key()==Qt::Key_A)
     {
-        setPos(x()-20,y());
+        setPos(x()-utility::charactersize,y());
+        setPixmap(QPixmap("/home/soham/Game/images/dog_left.png"));
     }
     else if(keyevent->key()==Qt::Key_S)
     {
-        setPos(x(),y()+20);
+        setPos(x(),y()+utility::charactersize);
+        setPixmap(QPixmap("/home/soham/Game/images/dog_down.png"));
+    }
+
+    else if(keyevent->key()==Qt::Key_Up && currpower>0)
+    {
+        setPixmap(QPixmap("/home/soham/Game/images/dog_up.png"));
+        bullets *newbullet=new bullets();
+        currpower-=1;
+        newbullet->adddirection(1);
+        scene()->addItem(newbullet);
+    }
+    else if(keyevent->key()==Qt::Key_Down && currpower>0)
+    {
+        setPixmap(QPixmap("/home/soham/Game/images/dog_down.png"));
+        bullets *newbullet=new bullets();
+        currpower-=1;
+        newbullet->adddirection(2);
+        scene()->addItem(newbullet);
+    }
+    else if(keyevent->key()==Qt::Key_Left && currpower>0)
+    {
+         setPixmap(QPixmap("/home/soham/Game/images/dog_left.png"));
+        bullets *newbullet=new bullets();
+        currpower-=1;
+        newbullet->adddirection(3);
+        scene()->addItem(newbullet);
+    }
+    else if(keyevent->key()==Qt::Key_Right && currpower>0)
+    {
+        setPixmap(QPixmap("/home/soham/Game/images/dog_right.png"));
+        bullets *newbullet=new bullets();
+        currpower-=1;
+        newbullet->adddirection(4);
+        scene()->addItem(newbullet);
     }
 
 
@@ -74,23 +124,26 @@ void MyLabel::keyPressEvent(QKeyEvent *keyevent)
 
     for(int i=0,n=collidingitem.size();i<n;i++)
     {
+        if(typeid(*collidingitem[i])==typeid(enemy))
+           {
+
+                   scene()->setBackgroundBrush(QPixmap("/home/soham/Game/images/gameover.jpg").scaled(QSize(utility::framewidth,utility::frameheight)));
+                   scene()->removeItem(this);
+                   delete this;
+
+           }
+
         if(typeid(*collidingitem[i])==typeid(fruits))
         {
-            currpower+=1000;  //Score when hit with a fruit
-
+            currpower+=1;  //Score when hit with a fruit
+               newgame->mypower->update(currpower);
             scene()->removeItem(collidingitem[i]);
             delete collidingitem[i];
         }
 
 
+
     }
 
-    currpower-=(abs(x()-startx))+(abs(y()-starty));
-    newgame->mypower->update(currpower);
-    if(currpower<=0)
-    {
-        scene()->setBackgroundBrush(QPixmap("/home/soham/Game/images/gameover.jpg").scaled(QSize(800,600)));
-        scene()->removeItem(this);
-        delete this;
-    }
+
 }

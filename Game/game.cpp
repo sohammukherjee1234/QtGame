@@ -10,6 +10,7 @@
 #include<stdlib.h>
 #include<QPixmap>
 #include "MyLabel.h"
+#include "utility.h"
 
 game::game(QGraphicsView *parent):QGraphicsView(parent)
 {
@@ -22,10 +23,10 @@ game::game(QGraphicsView *parent):QGraphicsView(parent)
 void game::show()
 {
     QPixmap bgimage("/home/soham/Game/images/Snowmap.png");
-    bgimage=bgimage.scaled(QSize(800,600));
+    bgimage=bgimage.scaled(QSize(utility::framewidth,utility::frameheight));
     scene->setBackgroundBrush(bgimage);
 
-    person->setPos(400,300);
+    person->setPos(utility::framewidth/2,utility::frameheight/2);
    scene->addItem(person);
    person->setFlag(QGraphicsItem::ItemIsFocusable);
    person->setFocus();
@@ -41,6 +42,6 @@ view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
    view->show();
 
 
-    view->setFixedSize(800,600);
-    view->setSceneRect(0,0,800,600);
+    view->setFixedSize(utility::framewidth,utility::frameheight);
+    view->setSceneRect(0,0,utility::framewidth,utility::frameheight);
 }
